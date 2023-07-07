@@ -1,9 +1,11 @@
 import Dashboard from "./Dashboard";
-import {useContext, useEffect} from "react";
+import {useContext, useEffect, useState} from "react";
 import AppContext from "./context";
 import StudentListItem from "./StudentListItem";
+import AddStudent from "./AddStudent.jsx";
 
 const StudentList = () => {
+    const [addingStudent, setAddingStudent] = useState(false)
     const {user, students, apiCalls} = useContext(AppContext)
 
     useEffect(() => {
@@ -13,18 +15,22 @@ const StudentList = () => {
     }, [user]);
 
     return (
-        <div>
+        <div className="flex h-full">
             <Dashboard/>
-            <div>
-                <h6>My students</h6>
+            <div className="flex grow flex-col align-middle">
+                <h2 className="text-2xl m-2 text-center">My students</h2>
                 <div>
                     {students && students.map((student, i) => (
                         <StudentListItem key={i} student={student}/>
                     ))}
-                    <button>
-                        Add student
-                    </button>
                 </div>
+                {addingStudent && <AddStudent addingStudent={addingStudent} setAddingStudent={setAddingStudent}/>}
+                <button
+                    className="m-2 bg-indigo-500 hover:bg-indigo-700 text-white rounded-full"
+                    onClick={() => setAddingStudent(!addingStudent)}
+                >
+                    Add student
+                </button>
             </div>
         </div>
     )

@@ -8,10 +8,10 @@ const AxiosClient = () => {
     const baseUrl = import.meta.env.VITE_BASE_URL
 
     const [students, setStudents] = useState([])
-    const [student, setStudent] = useState(null)
     const [user, setUser] = useState(undefined)
     const [report, setReport] = useState(undefined)
     const [errors, setErrors] = useState([])
+    const [currentStudent, setCurrentStudent] = useState(undefined)
 
     const apiCall = ({method, url, data}) => {
         return axios({
@@ -34,11 +34,12 @@ const AxiosClient = () => {
         setStudents(data)
     }).catch(handleError)
 
-    const getStudent = (studentId) => apiCall({
-        method: "get",
-        url: `/students/${studentId}`
-    }).then(({data}) => {
-        setStudent(data)
+    const createStudent = (newStudent, userId) => apiCall({
+        method: "post",
+        url: `/students`,
+        data: newStudent
+    }).then(() => {
+        getStudents(userId)
     }).catch(handleError)
 
     const deleteStudent = (studentId, userId) => apiCall({
@@ -64,7 +65,7 @@ const AxiosClient = () => {
     }).catch(handleError)
 
     useEffect(() => {
-        getUser("Kieren")
+        getUser("Test_User")
     }, [])
 
     const createUser = (newUser) => apiCall({
@@ -100,8 +101,8 @@ const AxiosClient = () => {
 
     const apiCalls = {
         getStudents,
-        getStudent,
         deleteStudent,
+        createStudent,
         editStudent,
         getUser,
         createUser,
@@ -117,7 +118,9 @@ const AxiosClient = () => {
                 students,
                 user,
                 report,
-                errors
+                errors,
+                setCurrentStudent,
+                currentStudent
             }}>
             <App/>
         </AppContext.Provider>

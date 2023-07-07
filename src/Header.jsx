@@ -5,12 +5,12 @@ const Header = () => {
     const { user } = useContext(AppContext)
 
     return (
-        <div className="flex h-36 w-full bg-emerald-300">
-            <div className="grow">
-            <p>Robo Report</p>
+        <div className="flex h-16 w-full bg-cyan-700 items-center">
+            <div className="grow m-3">
+            <p className="text-white">Robo Report</p>
             </div>
-            <div>
-                <h3>
+            <div className="m-3">
+                <h3 className="text-white">
                     {`Welcome ${user === undefined ? "User" : user.username}`}
                 </h3>
             </div>

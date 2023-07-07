@@ -6,13 +6,7 @@ import AddStudent from "./AddStudent.jsx";
 
 const StudentList = () => {
     const [addingStudent, setAddingStudent] = useState(false)
-    const {user, students, apiCalls} = useContext(AppContext)
-
-    useEffect(() => {
-        if (user && user._id) {
-            apiCalls.getStudents(user._id);
-        }
-    }, [user]);
+    const {students} = useContext(AppContext)
 
     return (
         <div className="flex h-full">

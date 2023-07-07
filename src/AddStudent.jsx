@@ -18,6 +18,7 @@ const AddStudent = ({addingStudent, setAddingStudent}) => {
         onSubmit: values => {
             apiCalls.createStudent(values, user._id)
             setAddingStudent(!addingStudent)
+            console.log(values)
         },
     })
     return (

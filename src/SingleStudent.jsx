@@ -1,10 +1,15 @@
 import Dashboard from "./Dashboard.jsx";
 import StudentNotes from "./StudentNotes.jsx";
+import {useNavigate, useParams} from "react-router-dom";
 import {useContext} from "react";
 import AppContext from "./context.js";
+import ReportGenerator from "./ReportGenerator.jsx";
 
 const SingleStudent = () => {
-    const { currentStudent} = useContext(AppContext)
+    const navigate = useNavigate()
+    const {students} = useContext(AppContext)
+    const {studentId} = useParams()
+    const currentStudent = students.find((student) => student._id === studentId)
 
     return (
         <div className="flex h-full">
@@ -16,6 +21,12 @@ const SingleStudent = () => {
                 <div className="flex">
                     <StudentNotes currentStudent={currentStudent}/>
                 </div>
+                <div className="flex">
+                    <ReportGenerator currentStudent={currentStudent}/>
+                </div>
+                <button onClick={() => navigate('/student-list')}>
+                    Back to students
+                </button>
             </div>
         </div>
     )

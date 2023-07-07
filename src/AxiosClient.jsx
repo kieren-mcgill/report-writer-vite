@@ -9,9 +9,7 @@ const AxiosClient = () => {
 
     const [students, setStudents] = useState([])
     const [user, setUser] = useState(undefined)
-    const [report, setReport] = useState(undefined)
     const [errors, setErrors] = useState([])
-    const [currentStudent, setCurrentStudent] = useState(undefined)
 
     const apiCall = ({method, url, data}) => {
         return axios({
@@ -71,7 +69,7 @@ const AxiosClient = () => {
     const createUser = (newUser) => apiCall({
         method: "post",
         url: `/users`,
-        data: { newUser }
+        data: newUser
     }).then(({data}) => {
         setUser(data)
     }).catch(handleError)
@@ -79,7 +77,7 @@ const AxiosClient = () => {
     const editUser = (userId, updateUser, username) => apiCall({
         method: "patch",
         url: `/users/${userId}`,
-        data: { updateUser }
+        data: updateUser
     }).then(() => {
         getUser(username)
     })
@@ -92,11 +90,11 @@ const AxiosClient = () => {
     }).catch(handleError)
 
     const generateReport = (student) => apiCall({
-        method: "get",
+        method: "post",
         url: `/generate`,
-        data: { student }
+        data: student
     }).then(({data}) => {
-        setReport(data)
+        editStudent(student._id, student.userId, {generalReport: data.message})
     }).catch(handleError)
 
     const apiCalls = {
@@ -117,10 +115,7 @@ const AxiosClient = () => {
                 apiCalls,
                 students,
                 user,
-                report,
-                errors,
-                setCurrentStudent,
-                currentStudent
+                errors
             }}>
             <App/>
         </AppContext.Provider>

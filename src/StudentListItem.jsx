@@ -4,7 +4,7 @@ import AppContext from "./context.js";
 
 const StudentListItem = ( { student } ) => {
     const navigate = useNavigate()
-    const { apiCalls, setCurrentStudent } = useContext(AppContext)
+    const { apiCalls } = useContext(AppContext)
 
     const handleDelete = () => {
         if (confirm(`Are you sure you want to delete ${student.firstName} from your class?`)) {
@@ -13,7 +13,6 @@ const StudentListItem = ( { student } ) => {
     }
 
     const handleSingleStudent = () => {
-        setCurrentStudent(student)
         navigate(`/single-student/${student._id}`)
     }
 

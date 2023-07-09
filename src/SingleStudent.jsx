@@ -12,7 +12,7 @@ const SingleStudent = () => {
     const currentStudent = students.find((student) => student._id === studentId)
 
     return (
-        <div className="flex h-full">
+        <div className="flex grow flex-row">
             <Dashboard/>
             <div className="flex grow flex-col align-middle">
                 <h2 className="text-2xl m-2 text-center">
@@ -20,13 +20,15 @@ const SingleStudent = () => {
                 </h2>
                 <div className="flex">
                     <StudentNotes currentStudent={currentStudent}/>
-                </div>
-                <div className="flex">
                     <ReportGenerator currentStudent={currentStudent}/>
                 </div>
-                <button onClick={() => navigate('/student-list')}>
-                    Back to students
-                </button>
+                <div>
+                    <button
+                        className="m-2 bg-indigo-500 hover:bg-indigo-700 text-white rounded-full"
+                        onClick={() => navigate('/student-list')}>
+                        Back to students
+                    </button>
+                </div>
             </div>
         </div>
     )

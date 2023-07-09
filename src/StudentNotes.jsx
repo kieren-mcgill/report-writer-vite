@@ -25,17 +25,28 @@ const StudentNotes = ( {currentStudent} ) => {
     }, [currentStudent])
 
     return (
+        <div className="w-1/2 p-5">
         <form onSubmit={formik.handleSubmit}>
-            <label htmlFor="generalReport">Notes</label>
+            <label
+                className="font-bold m-2"
+                htmlFor="generalReport">{currentStudent && `${currentStudent.firstName}'s notes`}</label>
             <textarea
+                className="p-2 bg-zinc-50 border-2 border-s-slate-300 rounded w-full"
                 id="generalNotes"
                 name="generalNotes"
                 onChange={formik.handleChange}
                 value={formik.values.generalNotes}
+                rows="15"
             />
-            <button type="submit">Save</button>
+            <button
+                className=" m-2 rounded-full border-none bg-green-500 hover:bg-green-600 text-white"
+                type="submit"
+            >
+                Save
+            </button>
         </form>
-    );
+        </div>
+    )
 }
 
 export default StudentNotes

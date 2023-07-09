@@ -6,7 +6,7 @@ import AddStudent from "./AddStudent";
 
 const AppRouter = () => {
     return (
-        <div>
+        <div className="flex flex-col grow">
             <Routes>
                 <Route path='/' element={(<LandingPage/>)}/>
                 <Route path='/student-list' element={(<StudentList/>)}/>

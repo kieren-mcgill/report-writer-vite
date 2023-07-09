@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {useState, useEffect} from "react";
+import {useState} from "react";
 import AppContext from "./context";
 import App from "./App";
 
@@ -55,20 +55,17 @@ const AxiosClient = () => {
         getStudents(userId)
     }).catch(handleError)
 
-    const getUser = (username) => apiCall({
-        method: "get",
-        url: `/users/${username}`
+    const getUser = (loginInfo) => apiCall({
+        method: "post",
+        url: `/users/find-user`,
+        data: loginInfo
     }).then(({data}) => {
         setUser(data)
     }).catch(handleError)
 
-    useEffect(() => {
-        getUser("Test_User")
-    }, [])
-
     const createUser = (newUser) => apiCall({
         method: "post",
-        url: `/users`,
+        url: `/users/create-user`,
         data: newUser
     }).then(({data}) => {
         setUser(data)

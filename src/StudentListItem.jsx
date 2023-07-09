@@ -12,16 +12,12 @@ const StudentListItem = ( { student } ) => {
         }
     }
 
-    const handleSingleStudent = () => {
-        navigate(`/single-student/${student._id}`)
-    }
-
     return(
-        <div className="flex flex-row justify-between p-2 m-2 items-center bg-zinc-50 border-2 border-s-slate-300">
+        <div className="flex flex-row justify-between p-2 m-2 items-center rounded bg-zinc-50 border-2 border-s-slate-300">
             <p className="grow">{`${student.firstName} ${student.lastName}`}</p>
             <button
                 className="m-2 rounded-full border-none bg-zinc-200 hover:bg-zinc-300"
-                onClick={handleSingleStudent}
+                onClick={() => navigate(`/single-student/${student._id}`)}
             >
                 View notes
             </button>

@@ -66,7 +66,9 @@ const AddStudent = ({addingStudent, setAddingStudent}) => {
                 </div>
                 <button
                     className=" m-2 rounded-full border-none bg-green-500 hover:bg-green-600 text-white"
-                    type="submit">Save
+                    type="submit"
+                >
+                    Save
                 </button>
             </form>
             <button

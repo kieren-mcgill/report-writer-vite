@@ -13,7 +13,7 @@ const ReportGenerator = ( {currentStudent} ) => {
         onSubmit: values => {
             apiCalls.editStudent(currentStudent._id, currentStudent.userId, values)
         },
-    });
+    })
 
     useEffect(() => {
         if(currentStudent) {
@@ -24,34 +24,41 @@ const ReportGenerator = ( {currentStudent} ) => {
         }
     }, [currentStudent])
 
-    // useEffect(() => {
-    //     if(report) {
-    //         formik.setValues({
-    //             ...formik.values,
-    //             generalReport: report.message,
-    //         })
-    //         }
-    // }, [report])
-
     const handleGenerate = () => {
         apiCalls.generateReport(currentStudent)
     }
 
     return (
-        <div>
+        <div className="w-1/2 p-5">
         <form onSubmit={formik.handleSubmit}>
-            <label htmlFor="generalRReport">Report</label>
+            <label
+                className="font-bold m-2"
+                htmlFor="generalRReport">{currentStudent && `${currentStudent.firstName}'s report`}</label>
             <textarea
+                className="p-2 bg-zinc-50 border-2 border-s-slate-300 rounded w-full"
                 id="generalReport"
                 name="generalReport"
                 onChange={formik.handleChange}
                 value={formik.values.generalReport}
+                rows="15"
             />
-            <button type="submit">Save</button>
+            <div className="flex justify-between">
+            <button
+                className=" m-2 rounded-full border-none bg-green-500 hover:bg-green-600 text-white"
+                type="submit"
+            >
+                Save
+            </button>
+            <button
+                className="m-2 rounded-full border-none bg-zinc-200 hover:bg-zinc-300"
+                onClick={handleGenerate}
+            >
+                Generate report
+            </button>
+            </div>
         </form>
-            <button onClick={handleGenerate}>Generate</button>
         </div>
-    );
+    )
 }
 
 export default ReportGenerator

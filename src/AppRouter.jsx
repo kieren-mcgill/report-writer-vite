@@ -1,7 +1,6 @@
 import {Route, Routes} from "react-router-dom"
 import LandingPage from "./LandingPage"
 import SingleStudent from "./SingleStudent"
-import AddStudent from "./AddStudent"
 import ViewStudents from "./ViewStudents.jsx";
 
 const AppRouter = () => {
@@ -11,7 +10,6 @@ const AppRouter = () => {
                 <Route path='/' element={(<LandingPage/>)}/>
                 <Route path='/view-students' element={(<ViewStudents/>)}/>
                 <Route path={`/single-student/:studentId`} element={(<SingleStudent/>)}/>
-                <Route path='/add-student' element={(<AddStudent/>)}/>
             </Routes>
         </div>
     )

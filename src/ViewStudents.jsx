@@ -1,22 +1,36 @@
-import StudentList from "./StudentList.jsx";
-import {useNavigate} from "react-router-dom";
 import Dashboard from "./Dashboard.jsx";
+import StudentListItem from "./StudentListItem.jsx";
+import {useContext, useState} from "react";
+import AppContext from "./context.js";
+import AddStudent from "./AddStudent.jsx";
 
 
 const ViewStudents = () => {
-    const navigate = useNavigate()
+    const {students} = useContext(AppContext)
+    const [addingStudent, setAddingStudent] = useState(false)
 
     return (
         <div className="flex grow">
             <Dashboard/>
             <div className="flex grow flex-col">
-                <StudentList/>
+                <div className="flex flex-col align-middle">
+                    <h2 className="text-2xl m-2 text-center">My students</h2>
+                    <div>
+                        {students && students.map((student, i) => (
+                            <StudentListItem key={i} student={student}/>
+                        ))}
+                    </div>
+                </div>
                 <div>
-                    <button
-                        className="m-2 bg-indigo-500 hover:bg-indigo-700 text-white rounded-full"
-                        onClick={() => navigate('/add-student')}>
-                        Add student
-                    </button>
+                    {addingStudent ?
+                        <AddStudent setAddingStudent={setAddingStudent}/>
+                        :
+                        <button
+                            className="m-2 bg-indigo-500 hover:bg-indigo-700 text-white rounded-full"
+                            onClick={() => setAddingStudent(true)}>
+                            Add student
+                        </button>
+                    }
                 </div>
             </div>
         </div>

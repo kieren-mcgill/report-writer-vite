@@ -25,7 +25,7 @@ const SingleStudent = () => {
                 <div>
                     <button
                         className="m-2 bg-indigo-500 hover:bg-indigo-700 text-white rounded-full"
-                        onClick={() => navigate('/student-list')}>
+                        onClick={() => navigate('/view-students')}>
                         Back to students
                     </button>
                 </div>

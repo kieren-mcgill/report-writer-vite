@@ -1,6 +1,7 @@
 import {useFormik} from "formik";
 import {useContext, useEffect} from "react";
 import AppContext from "./context.js";
+import Cookies from "js-cookie";
 
 
 const ReportGenerator = ( {currentStudent} ) => {
@@ -11,7 +12,7 @@ const ReportGenerator = ( {currentStudent} ) => {
             generalReport: "",
         },
         onSubmit: values => {
-            apiCalls.editStudent(currentStudent._id, currentStudent.userId, values)
+            apiCalls.editStudent(currentStudent._id, Cookies.get('userId'), values)
         },
     })
 
@@ -45,15 +46,11 @@ const ReportGenerator = ( {currentStudent} ) => {
             <div className="flex justify-between">
             <button
                 className=" m-2 rounded-full border-none bg-green-500 hover:bg-green-600 text-white"
-                type="submit"
-            >
-                Save
+                type="submit">Save
             </button>
             <button
                 className="m-2 rounded-full border-none bg-zinc-200 hover:bg-zinc-300"
-                onClick={handleGenerate}
-            >
-                Generate report
+                onClick={handleGenerate}>Generate report
             </button>
             </div>
         </form>

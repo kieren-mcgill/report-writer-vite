@@ -1,14 +1,15 @@
 import {useNavigate} from "react-router-dom";
 import {useContext} from "react";
 import AppContext from "./context.js";
+import Cookies from "js-cookie";
 
-const StudentListItem = ( { student } ) => {
+const StudentListItem = ( { student, cookieUserId } ) => {
     const navigate = useNavigate()
     const { apiCalls } = useContext(AppContext)
 
     const handleDelete = () => {
         if (confirm(`Are you sure you want to delete ${student.firstName} from your class?`)) {
-            apiCalls.deleteStudent(student._id, student.userId)
+            apiCalls.deleteStudent(student._id, Cookies.get('userId'))
         }
     }
 

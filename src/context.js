@@ -4,8 +4,8 @@ const AppContext = createContext({
     apiCalls: {},
     students: [],
     user: undefined,
-    report: undefined,
-    errors: []
+    errors: [],
+    messages: [],
 })
 
 export default AppContext

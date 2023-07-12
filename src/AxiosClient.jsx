@@ -1,7 +1,9 @@
 import axios from 'axios';
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import AppContext from "./context";
 import App from "./App";
+import Cookies from 'js-cookie';
+import {useNavigate} from "react-router-dom";
 
 const AxiosClient = () => {
 
@@ -10,6 +12,27 @@ const AxiosClient = () => {
     const [students, setStudents] = useState([])
     const [user, setUser] = useState(undefined)
     const [errors, setErrors] = useState([])
+    const [messages, setMessages] = useState([])
+
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        if (user) {
+            apiCalls.getStudents(user._id);
+            navigate('/view-students')
+        } else {
+            const userId = Cookies.get('userId')
+            if (userId) {
+                apiCalls.getUser(userId)
+            } else {
+                navigate('/')
+            }
+        }
+    }, [user])
+
+    useEffect(() => {
+        apiCalls.getStudents(Cookies.get('userId'))
+    }, [messages])
 
     const apiCall = ({method, url, data}) => {
         return axios({
@@ -22,68 +45,100 @@ const AxiosClient = () => {
     }
 
     const handleError = (error) => {
-        setErrors((prevState) => [...prevState, error.message])
+        let errorMessage
+        if (error.response && error.response.data && error.response.data.message) {
+            errorMessage = error.response.data.message
+        } else {
+            errorMessage = error.message
+        }
+        setErrors((prevState) => [...prevState, errorMessage])
     }
+
+
+    const setCookies = (userIdValue) => {
+        Cookies.set('userId', userIdValue, { expires: 1 })
+    }
+
+    const login = (loginInfo) => apiCall({
+        method: "post",
+        url: `/gateway/login`,
+        data: loginInfo
+    }).then(({data}) => {
+        setCookies(data._id)
+        setUser(data)
+    }).catch(handleError)
+
+    const signUp = (newUser) => apiCall({
+        method: "post",
+        url: `/gateway/signup`,
+        data: newUser
+    }).then(({data}) => {
+        setUser(data)
+        setCookies(data.token, data._id)
+    }).catch(handleError)
+
+    const getUser = (userId) => apiCall({
+        method: "get",
+        url: `/users/${userId}`,
+    }).then(({data}) => {
+        setUser(data)
+    }).catch(handleError)
 
     const getStudents = (userId) => apiCall({
         method: "get",
         url: `/students/${userId}`,
     }).then(({data}) => {
+        console.log(data)
         setStudents(data)
     }).catch(handleError)
 
     const createStudent = (newStudent, userId) => apiCall({
         method: "post",
-        url: `/students`,
+        url: `/students/${userId}`,
         data: newStudent
+    }).then(({ data }) => {
+        setMessages((prevState) => [...prevState, data.message]);
+        return getStudents(userId);
     }).then(() => {
-        getStudents(userId)
-    }).catch(handleError)
+        navigate('/view-students');
+    }).catch(handleError);
+
 
     const deleteStudent = (studentId, userId) => apiCall({
         method: "delete",
-        url: `/students/${studentId}`
-    }).then(() => {
+        url: `/students/${userId}/${studentId}`
+    }).then(( { data } ) => {
+        setMessages((prevState) => [...prevState, data.message])
         getStudents(userId)
     }).catch(handleError)
 
     const editStudent = (studentId, userId, updatedStudent) => apiCall({
         method: "patch",
-        url: `/students/${studentId}`,
+        url: `/students/${userId}/${studentId}`,
         data: updatedStudent,
-    }).then(() => {
+    }).then(( {data} ) => {
+        setMessages((prevState) => [...prevState, data.message])
         getStudents(userId)
     }).catch(handleError)
 
-    const getUser = (loginInfo) => apiCall({
-        method: "post",
-        url: `/users/find-user`,
-        data: loginInfo
-    }).then(({data}) => {
-        setUser(data)
-    }).catch(handleError)
 
-    const createUser = (newUser) => apiCall({
-        method: "post",
-        url: `/users/create-user`,
-        data: newUser
-    }).then(({data}) => {
-        setUser(data)
-    }).catch(handleError)
-
-    const editUser = (userId, updateUser, username) => apiCall({
+    const editUser = (userId, updateUser) => apiCall({
         method: "patch",
         url: `/users/${userId}`,
         data: updateUser
     }).then(() => {
-        getUser(username)
-    })
+        getUser(userId)
+    }).catch(handleError)
 
     const deleteUser = (userId) => apiCall({
         method: "delete",
         url: `/users/${userId}`
-    }).then(({data}) => {
-        console.log(data.status)
+    }).then(() => {
+        Cookies.remove('userId')
+        Cookies.remove('token')
+        setUser(undefined)
+        navigate('/')
+        // To do : handle deleting all the students associated with user
     }).catch(handleError)
 
     const generateReport = (student) => apiCall({
@@ -91,16 +146,18 @@ const AxiosClient = () => {
         url: `/generate`,
         data: student
     }).then(({data}) => {
-        editStudent(student._id, student.userId, {generalReport: data.message})
+        editStudent(student._id, Cookies.get('userId'), {generalReport: data.message})
     }).catch(handleError)
+
 
     const apiCalls = {
         getStudents,
         deleteStudent,
         createStudent,
         editStudent,
+        login,
         getUser,
-        createUser,
+        signUp,
         editUser,
         deleteUser,
         generateReport
@@ -112,7 +169,11 @@ const AxiosClient = () => {
                 apiCalls,
                 students,
                 user,
-                errors
+                setUser,
+                errors,
+                setErrors,
+                messages,
+                setMessages
             }}>
             <App/>
         </AppContext.Provider>

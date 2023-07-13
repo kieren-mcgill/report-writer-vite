@@ -41,7 +41,7 @@ const ReportGenerator = ( {currentStudent, notesSaved} ) => {
     const handleGenerate = () => {
         if(!notesSaved) {
             setErrors((prevState) => [...prevState, "Please save your notes before generating a report"])
-        } else if (!currentStudent.generalReport) {
+        } else if (!currentStudent.generalNotes) {
             setErrors((prevState) => [...prevState, `You need to write notes about ${currentStudent.firstName} to generate an accurate report`])
         } else {
         apiCalls.generateReport(currentStudent)

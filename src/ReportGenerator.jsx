@@ -6,7 +6,7 @@ import animatedSnake from "./assets/images/3D-snake.gif";
 
 
 const ReportGenerator = ( {currentStudent, notesSaved} ) => {
-    const { apiCalls, messages, setErrors } = useContext(AppContext)
+    const { apiCalls, messages, errors, setErrors } = useContext(AppContext)
     const [reportSaved, setReportSaved] = useState(true)
     const [generating, setGenerating] = useState(false)
 
@@ -33,7 +33,10 @@ const ReportGenerator = ( {currentStudent, notesSaved} ) => {
             setReportSaved(true)
             setGenerating(false)
         }
-    }, [messages])
+        if(errors.length > 0) {
+            setGenerating(false)
+        }
+    }, [messages, errors])
 
     const handleGenerate = () => {
         if(!notesSaved) {

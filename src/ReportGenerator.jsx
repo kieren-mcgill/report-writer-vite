@@ -1,11 +1,14 @@
 import {useFormik} from "formik";
-import {useContext, useEffect} from "react";
+import {useContext, useEffect, useState} from "react";
 import AppContext from "./context.js";
 import Cookies from "js-cookie";
+import animatedSnake from "./assets/images/3D-snake.gif";
 
 
-const ReportGenerator = ( {currentStudent} ) => {
-    const { apiCalls } = useContext(AppContext)
+const ReportGenerator = ( {currentStudent, notesSaved} ) => {
+    const { apiCalls, messages, setErrors } = useContext(AppContext)
+    const [reportSaved, setReportSaved] = useState(true)
+    const [generating, setGenerating] = useState(false)
 
     const formik = useFormik({
         initialValues: {
@@ -25,8 +28,27 @@ const ReportGenerator = ( {currentStudent} ) => {
         }
     }, [currentStudent])
 
+    useEffect(() => {
+        if(messages[messages.length - 1] === "The student's report has been updated") {
+            setReportSaved(true)
+            setGenerating(false)
+        }
+    }, [messages])
+
     const handleGenerate = () => {
+        if(!notesSaved) {
+            setErrors((prevState) => [...prevState, "Please save your notes before generating a report"])
+        } else if (!currentStudent.generalReport) {
+            setErrors((prevState) => [...prevState, `You need to write notes about ${currentStudent.firstName} to generate an accurate report`])
+        } else {
         apiCalls.generateReport(currentStudent)
+        setGenerating(true)
+        }
+    }
+
+    const handleInputChange = (event) => {
+        formik.handleChange(event)
+        setReportSaved(false)
     }
 
     return (
@@ -35,25 +57,34 @@ const ReportGenerator = ( {currentStudent} ) => {
             <label
                 className="font-bold m-2"
                 htmlFor="generalRReport">{currentStudent && `${currentStudent.firstName}'s report`}</label>
-            <textarea
-                className="p-2 bg-zinc-50 border-2 border-s-slate-300 rounded w-full"
-                id="generalReport"
-                name="generalReport"
-                onChange={formik.handleChange}
-                value={formik.values.generalReport}
-                rows="15"
-            />
+            {
+                generating ?
+                <div className="flex justify-center items-center p-2 border-2 border-s-slate-300 rounded w-full h-96">
+                    <img src={animatedSnake} alt="A loading animation" />
+                </div>
+                :
+                <textarea
+                    className="p-2 bg-zinc-50 border-2 border-s-slate-300 rounded w-full"
+                    id="generalReport"
+                    name="generalReport"
+                    onChange={handleInputChange}
+                    value={formik.values.generalReport}
+                    rows="15"
+                />
+            }
             <div className="flex justify-between">
             <button
-                className=" m-2 rounded-full border-none bg-green-500 hover:bg-green-600 text-white"
+                className=" m-2 rounded-full border-none bg-green-500 hover:bg-green-600 disabled:opacity-25 text-white"
+                disabled={reportSaved}
                 type="submit">Save
-            </button>
-            <button
-                className="m-2 rounded-full border-none bg-zinc-200 hover:bg-zinc-300"
-                onClick={handleGenerate}>Generate report
             </button>
             </div>
         </form>
+            <button
+                className="m-2 rounded-full border-none bg-zinc-200 hover:bg-zinc-300"
+                onClick={handleGenerate}>
+                {currentStudent && currentStudent.generalReport !== "" ? 'Regenerate report' : 'Generate report'}
+            </button>
         </div>
     )
 }

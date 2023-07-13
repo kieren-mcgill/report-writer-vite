@@ -1,13 +1,15 @@
 import Dashboard from "./Dashboard.jsx";
 import StudentListItem from "./StudentListItem.jsx";
-import {useContext, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import AppContext from "./context.js";
 import AddStudent from "./AddStudent.jsx";
+import Cookies from "js-cookie";
 
 
 const ViewStudents = () => {
     const {students} = useContext(AppContext)
     const [addingStudent, setAddingStudent] = useState(false)
+
 
     return (
         <div className="flex grow">

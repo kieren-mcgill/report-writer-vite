@@ -30,10 +30,6 @@ const AxiosClient = () => {
         }
     }, [user])
 
-    useEffect(() => {
-        apiCalls.getStudents(Cookies.get('userId'))
-    }, [messages])
-
     const apiCall = ({method, url, data}) => {
         return axios({
             method,
@@ -54,10 +50,16 @@ const AxiosClient = () => {
         setErrors((prevState) => [...prevState, errorMessage])
     }
 
-
     const setCookies = (userIdValue) => {
         Cookies.set('userId', userIdValue, { expires: 1 })
     }
+
+//Solve bug not re-rendering ViewStudents after adding new student
+    useEffect(() => {
+        if(messages.length > 0) {
+            apiCalls.getStudents(Cookies.get('userId'))
+        }
+    }, [messages])
 
     const login = (loginInfo) => apiCall({
         method: "post",
@@ -88,7 +90,6 @@ const AxiosClient = () => {
         method: "get",
         url: `/students/${userId}`,
     }).then(({data}) => {
-        console.log(data)
         setStudents(data)
     }).catch(handleError)
 
@@ -121,7 +122,6 @@ const AxiosClient = () => {
         getStudents(userId)
     }).catch(handleError)
 
-
     const editUser = (userId, updateUser) => apiCall({
         method: "patch",
         url: `/users/${userId}`,
@@ -146,7 +146,9 @@ const AxiosClient = () => {
         url: `/generate`,
         data: student
     }).then(({data}) => {
-        editStudent(student._id, Cookies.get('userId'), {generalReport: data.message})
+        if(data && data.success) {
+            editStudent(student._id, Cookies.get('userId'), {generalReport: data.message})
+        }
     }).catch(handleError)
 
 

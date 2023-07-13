@@ -6,6 +6,8 @@ const AppContext = createContext({
     user: undefined,
     errors: [],
     messages: [],
+    setErrors: () => {},
+    setMessages: () => {}
 })
 
 export default AppContext

@@ -1,6 +1,8 @@
 import {useFormik} from 'formik';
 import {useContext} from "react";
 import AppContext from "./context.js";
+import {faCheck, faTrashCan} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 const AddStudent = ({setAddingStudent}) => {
     const {user, apiCalls} = useContext(AppContext)
@@ -20,7 +22,7 @@ const AddStudent = ({setAddingStudent}) => {
         },
     })
     return (
-        <div className="flex flex-row justify-between p-2 m-2 items-center bg-zinc-50 border-2 border-s-slate-300">
+        <div className="flex flex-row justify-between p-2 m-2 items-center bg-zinc-50 border-4 border-s-slate-300 border-dashed">
             <form
                 className="flex grow justify-between"
                 onSubmit={formik.handleSubmit}>
@@ -60,15 +62,15 @@ const AddStudent = ({setAddingStudent}) => {
                     </select>
                 </div>
                 <button
-                    className=" m-2 rounded-full border-none bg-green-500 hover:bg-green-600 text-white"
+                    className=" m-2 rounded-full border-none bg-green-500 hover:bg-green-600 text-white px-4"
                     type="submit">
-                    Save
+                    <FontAwesomeIcon icon={faCheck} />
                 </button>
             </form>
             <button
-                className="m-2 rounded-full border-none bg-red-500 hover:bg-red-600 text-white"
+                className="m-2 rounded-full border-none bg-red-500 hover:bg-red-600 text-white px-4"
                 onClick={() => setAddingStudent(false)}>
-                Delete
+                <FontAwesomeIcon className="" icon={faTrashCan} />
             </button>
         </div>
     )

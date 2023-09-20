@@ -2,6 +2,8 @@ import {useFormik} from "formik";
 import {useContext, useEffect} from "react";
 import AppContext from "./context.js";
 import Cookies from "js-cookie";
+import {faCheck} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 
 const StudentNotes = ({currentStudent, notesSaved, setNotesSaved}) => {
@@ -37,7 +39,7 @@ const StudentNotes = ({currentStudent, notesSaved, setNotesSaved}) => {
     }
 
     return (
-        <div className="w-1/2 p-5">
+        <div className="m-4">
             <form onSubmit={formik.handleSubmit}>
                 <label
                     className="font-bold m-2"
@@ -51,10 +53,10 @@ const StudentNotes = ({currentStudent, notesSaved, setNotesSaved}) => {
                     rows="15"
                 />
                 <button
-                    className=" m-2 rounded-full border-none bg-green-500 hover:bg-green-600 disabled:opacity-25 text-white"
+                    className=" mt-2 rounded-full border-none bg-green-500 hover:bg-green-600 disabled:opacity-25 text-white px-4"
                     disabled={notesSaved}
                     type="submit">
-                    Save
+                    <FontAwesomeIcon icon={faCheck}/>
                 </button>
             </form>
         </div>

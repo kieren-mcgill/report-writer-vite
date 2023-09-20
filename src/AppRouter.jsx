@@ -5,7 +5,7 @@ import ViewStudents from "./ViewStudents.jsx";
 
 const AppRouter = () => {
     return (
-        <div className="flex flex-col grow">
+        <div className="flex flex-col grow min-h-screen pt-20">
             <Routes>
                 <Route path='/' element={(<LandingPage/>)}/>
                 <Route path='/view-students' element={(<ViewStudents/>)}/>

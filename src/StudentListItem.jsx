@@ -2,6 +2,8 @@ import {useNavigate} from "react-router-dom";
 import {useContext} from "react";
 import AppContext from "./context.js";
 import Cookies from "js-cookie";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faTrashCan} from "@fortawesome/free-solid-svg-icons";
 
 const StudentListItem = ( { student, cookieUserId } ) => {
     const navigate = useNavigate()
@@ -23,10 +25,10 @@ const StudentListItem = ( { student, cookieUserId } ) => {
                 View notes
             </button>
             <button
-                className="m-2 rounded-full border-none bg-red-500 hover:bg-red-600 text-white"
+                className="m-2 rounded-full border-none bg-red-500 hover:bg-red-600 text-white px-4"
                 onClick={handleDelete}
             >
-                Delete
+                <FontAwesomeIcon className="" icon={faTrashCan} />
             </button>
         </div>
     )

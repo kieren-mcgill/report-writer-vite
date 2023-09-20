@@ -1,9 +1,10 @@
-import Dashboard from "./Dashboard.jsx";
+
 import StudentListItem from "./StudentListItem.jsx";
-import {useContext, useEffect, useState} from "react";
+import {useContext, useState} from "react";
 import AppContext from "./context.js";
 import AddStudent from "./AddStudent.jsx";
-import Cookies from "js-cookie";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faPlus} from "@fortawesome/free-solid-svg-icons";
 
 
 const ViewStudents = () => {
@@ -13,7 +14,6 @@ const ViewStudents = () => {
 
     return (
         <div className="flex grow">
-            <Dashboard/>
             <div className="flex grow flex-col">
                 <div className="flex flex-col align-middle">
                     <h2 className="text-2xl m-2 text-center">My students</h2>
@@ -28,9 +28,9 @@ const ViewStudents = () => {
                         <AddStudent setAddingStudent={setAddingStudent}/>
                         :
                         <button
-                            className="m-2 bg-indigo-500 hover:bg-indigo-700 text-white rounded-full"
+                            className="m-2 bg-indigo-500 hover:bg-indigo-700 text-white rounded-full px-3"
                             onClick={() => setAddingStudent(true)}>
-                            Add student
+                            <FontAwesomeIcon size="xl" icon={faPlus} />
                         </button>
                     }
                 </div>

@@ -3,6 +3,8 @@ import {useContext, useEffect, useState} from "react";
 import AppContext from "./context.js";
 import Cookies from "js-cookie";
 import animatedSnake from "./assets/images/3D-snake.gif";
+import {faCheck, faRobot} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 
 const ReportGenerator = ( {currentStudent, notesSaved} ) => {
@@ -55,11 +57,11 @@ const ReportGenerator = ( {currentStudent, notesSaved} ) => {
     }
 
     return (
-        <div className="w-1/2 p-5">
+        <div className="m-4 relative">
         <form onSubmit={formik.handleSubmit}>
             <label
                 className="font-bold m-2"
-                htmlFor="generalRReport">{currentStudent && `${currentStudent.firstName}'s report`}</label>
+                htmlFor="generalReport">{currentStudent && `${currentStudent.firstName}'s report`}</label>
             {
                 generating ?
                 <div className="flex justify-center items-center p-2 border-2 border-s-slate-300 rounded w-full h-96">
@@ -77,16 +79,18 @@ const ReportGenerator = ( {currentStudent, notesSaved} ) => {
             }
             <div className="flex justify-between">
             <button
-                className=" m-2 rounded-full border-none bg-green-500 hover:bg-green-600 disabled:opacity-25 text-white"
+                className=" mt-2 rounded-full border-none bg-green-500 hover:bg-green-600 disabled:opacity-25 text-white px-4"
                 disabled={reportSaved}
-                type="submit">Save
+                type="submit">
+                <FontAwesomeIcon icon={faCheck}/>
             </button>
             </div>
         </form>
             <button
-                className="m-2 rounded-full border-none bg-zinc-200 hover:bg-zinc-300"
+                className="m-2 rounded-full border-none bg-zinc-200 hover:bg-zinc-300 absolute bottom-0 right-0"
                 onClick={handleGenerate}>
-                {currentStudent && currentStudent.generalReport !== "" ? 'Regenerate report' : 'Generate report'}
+                <span><FontAwesomeIcon className="me-4" icon={faRobot}/></span>
+                {currentStudent && currentStudent.generalReport !== "" ? 'Regenerate' : 'Generate'}
             </button>
         </div>
     )
